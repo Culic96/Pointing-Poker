@@ -16,6 +16,23 @@ const firebaseConfig = {
   measurementId: "G-QKSB9P6674"
 };
 
+const publicRuntimeConfig = {
+  firebaseConfig,
+};
+
+const reactConfig = {
+  "hosting": {
+  "public": "public",  
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
+}
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+
+export default publicRuntimeConfig;
