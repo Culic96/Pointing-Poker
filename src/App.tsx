@@ -22,16 +22,20 @@ export default function App() {
     <Header/>
     <BodyWrapper>
     {(!isLoginModalOpen && !isRegisterModalOpen  && auth === null )&&(
+      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', gap: '20px'}}>
+   
   <LoginRegisterButton onClick={() => setIsLoginModalOpen(true)}>
     <h2>Login</h2>
   </LoginRegisterButton>
+  <LoginRegisterButton onClick={() =>  setISRegisterModalOpen(true)}><h2>Register</h2></LoginRegisterButton>
+
+  </div>
 )}
+
       {isLoginModalOpen  && <LoginModal  isOpen={isLoginModalOpen} onClose={handleModalClose}/>}
       {isRegisterModalOpen && <RegisterModal  isOpen={isRegisterModalOpen} onClose={handleModalClose}></RegisterModal>}
-      {(!isLoginModalOpen && !isRegisterModalOpen && auth === null) && (
-      <LoginRegisterButton onClick={() =>  setISRegisterModalOpen(true)}><h2>Register</h2></LoginRegisterButton>
+      
 
-      )}
       {auth && <PokerSession/>}
     </BodyWrapper>
     </>

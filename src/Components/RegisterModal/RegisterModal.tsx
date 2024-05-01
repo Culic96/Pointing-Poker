@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from "react";
-import { auth, firestore, registerUser } from "../../firebase/firebaseFunctions";
+import { registerUser } from "../../firebase/firebaseFunctions";
 import {
   LoginRegisterButton,
   ModalButtonsWrapper,
@@ -8,7 +8,6 @@ import {
   ModalsWrapper,
   Paragraph,
 } from "../../common/commonStyles/styled";
-import { addDoc, collection } from "firebase/firestore";
 
 
 

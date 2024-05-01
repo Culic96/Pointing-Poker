@@ -6,6 +6,7 @@ import {
   doc,
   getFirestore,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -41,9 +42,19 @@ const getCollection = (collectionPath: string) =>
   };
 
 
-const loginUser = (email: string, password: string) => {
-  return signInWithEmailAndPassword(auth, email, password);
-};
+  const loginUser = async (email: string, password: string) => {
+    try {
+      const credential = await signInWithEmailAndPassword(auth, email, password);
+      const userDocRef = doc(firestore, "users", credential.user.uid);
+      await updateDoc(userDocRef, {
+        isOnline: true,
+      });
+      console.log("loggin called")
+      return credential;
+    } catch (error) {
+      throw error;
+    }
+  };
 
 
 

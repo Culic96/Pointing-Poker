@@ -1,14 +1,13 @@
 import styled from "styled-components";
-import check from "react-icons"
 export const PokerSessionWrapper = styled('div')({
-    width: '600px',
-    height: '80vh',
-    padding: '12px'
+    width: '800px',
+    padding: '12px',
 })
 
 export const GridWrapper = styled('div')({
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'flex-start',
+    padding: '20px'
 })
 
 export const GridContainer = styled('div')({
@@ -31,9 +30,34 @@ export const GridItem = styled('button')({
 export const Divider = styled('div')({
     width: '100%',
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   });
+
+export const ButtonsWrapper = styled('div')({
+  display: 'flex',
+  justifyContent: 'flex-start',
+  alignItems: 'center',
+  gap: '20px',
+  padding: '20px'
+})
+
+export const PrimaryButton = styled('button')({
+  outline: 0,
+  padding: '10px',
+  color: 'white',
+  border: '2px solid transparent',
+  textAlign: 'center',
+  backgroundColor: 'orange',
+  fontSize: '24px',
+  transition: '0.3s ease',
+  "&:hover": {
+    backgroundColor: '#ffcc33',
+    cursor: 'pointer',
+    transition: '0.3s ease',
+    border: '2px solid orange'
+  }
+})
   
   export const UsersWrapper = styled('div')({
     display: 'flex',
@@ -43,16 +67,37 @@ export const Divider = styled('div')({
   });
   
   export const UserHolder = styled('div')({
-    padding: '20px', // Adjust padding for spacing
-    width: '300px',
-    height: '30px',
+    padding: '10px', // Adjust padding for spacing
+    width: '500px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: '10px', // Add margin bottom for spacing between user components
   });
 
-// export const HasVotedHolder = styled(check)({
-//     height: '30px',
-//     width: '30px'
-// })
+  export const UserInfoHolder = styled('div')<{ isOpened: boolean }>(
+    { 
+      width: '33%',
+      height: '100%',
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      transition: 'background-color, 0,5s, ease',
+    },
+    ({ isOpened }) => ({
+      ...(isOpened ? {} : { visibility: 'hidden',    }),
+    })
+  );
+
+  export const UserPointsHolder = styled('div')<{ isOpened: boolean }>(
+    { 
+      width: '33%',
+      height: '100%',
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+    },
+    ({ isOpened }) => ({
+      ...(isOpened ? {} : { backgroundColor: 'black' }),
+    })
+  );

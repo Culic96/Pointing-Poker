@@ -7,7 +7,8 @@ import {
   useEffect,
   useState,
 } from "react";
-import { auth as authorization } from "../firebase/firebaseFunctions";
+import { auth as authorization, firestore } from "../firebase/firebaseFunctions";
+import { doc, updateDoc } from "firebase/firestore";
 
 export interface Auth {
   userId: string;
@@ -45,13 +46,21 @@ function useAuthProvider(): AuthContext {
   }, []);
 
   const logoutUser = async () => {
-    console.log("called logout user")
+    console.log("called logout user");
     try {
+      if (auth && auth.userId) {
+        // Update Firestore document to set isOnline to false
+        const userDocRef = doc(firestore, "users", auth.userId);
+        await updateDoc(userDocRef, {
+          isOnline: false,
+        });
+      }
+  
+      // Sign out the user
       await signOut(authorization);
     } catch (error: any) {
       console.log(error.message);
-    }
-    finally{
+    } finally {
       setAuth(null);
     }
   };

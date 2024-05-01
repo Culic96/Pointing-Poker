@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 export const BodyWrapper = styled('div')({
-    height: '90vh',
-    width: '100vw',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

@@ -3,6 +3,7 @@ export default interface IUser {
     name: string,
     email: string,
     hasVoted? : boolean,
-    points : number
+    points : number,
+    isOnline: boolean
 }
 

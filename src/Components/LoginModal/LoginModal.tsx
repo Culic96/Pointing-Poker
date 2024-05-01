@@ -55,7 +55,6 @@ export default function LoginModal({
           ></ModalInput>
           <ModalButtonsWrapper>
             <LoginRegisterButton
-              // onClick={() => loginUser(email, password)}
               type="submit"
             >
               <h2>Login</h2>
