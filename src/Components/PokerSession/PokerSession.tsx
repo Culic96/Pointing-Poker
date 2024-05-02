@@ -45,6 +45,10 @@ export default function PokerSession() {
     setShowVotes(true);
   }
 
+  useEffect(() => {
+
+  },[localUsers])
+
   const addPointsToUser = (userId: string, pointsToAdd: number) => {
     setLocalUsers((prevUsers) =>
       prevUsers.map((user) => {
