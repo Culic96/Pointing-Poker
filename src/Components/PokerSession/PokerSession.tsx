@@ -46,16 +46,24 @@ export default function PokerSession() {
   }, []);
 
   const showVotesHandler = async () => {
+    setLocalUsers((prevUsers) =>
+      prevUsers.map((user) => ({
+        ...user,
+        showVotes: true,
+      }))
+    );
+  
+    // Update all user documents in Firestore
     localUsers.forEach(async (user) => {
       if (user.id) {
         const userDocRef = doc(firestore, "users", user.id);
         await updateDoc(userDocRef, {
-          showVotes: true
+          ...user,
+          showVotes: true,
         });
       }
     });
   };
-
 
   const addPointsToUser = async (userId: string, pointsToAdd: number) => {
     const updatedUsers = localUsers.map((user) => {
@@ -84,10 +92,11 @@ export default function PokerSession() {
         ...user,
         points: 0,
         hasVoted: false,
+        showVotes: false,
       }))
     );
     setActiveIndex(0);
-    // Update all user documents in Firestore
+  
     localUsers.forEach(async (user) => {
       if (user.id) {
         const userDocRef = doc(firestore, "users", user.id);
@@ -95,7 +104,7 @@ export default function PokerSession() {
           ...user,
           points: 0,
           hasVoted: false,
-          showVotes: false
+          showVotes: false,
         });
       }
     });
