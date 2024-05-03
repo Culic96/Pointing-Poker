@@ -28,7 +28,6 @@ export default function PokerSession() {
   const points = [1, 2, 3, 5, 8, 13, 21];
   const [localUsers, setLocalUsers] = useState<IUser[]>([]);
   const { auth } = useAuth();
-  const [activeIndex, setActiveIndex] = useState(0)
   const userDocRef = collection(firestore, "users");
   useEffect(() => {
     const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
@@ -95,7 +94,6 @@ export default function PokerSession() {
         showVotes: false,
       }))
     );
-    setActiveIndex(0);
   
     localUsers.forEach(async (user) => {
       if (user.id) {
@@ -123,11 +121,10 @@ export default function PokerSession() {
             <GridContainer>
               {points.map((point) => (
                <GridItem
-               activeIndex={activeIndex === point}
+               activeIndex={localUsers.some((user) => user.points === point)}
                key={point}
                onClick={() => {
                  addPointsToUser(auth.userId, point);
-                 setActiveIndex(point);
                }}
              >
                {point}
