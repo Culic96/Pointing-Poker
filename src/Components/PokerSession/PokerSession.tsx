@@ -56,6 +56,7 @@ export default function PokerSession() {
     });
   };
 
+
   const addPointsToUser = async (userId: string, pointsToAdd: number) => {
     const updatedUsers = localUsers.map((user) => {
       if (user.id === userId) {
@@ -91,6 +92,7 @@ export default function PokerSession() {
       if (user.id) {
         const userDocRef = doc(firestore, "users", user.id);
         await updateDoc(userDocRef, {
+          ...user,
           points: 0,
           hasVoted: false,
           showVotes: false
