@@ -1,13 +1,13 @@
 import React, { FormEvent, useState } from "react";
 import { registerUser } from "../../firebase/firebaseFunctions";
 import {
-  LoginRegisterButton,
   ModalButtonsWrapper,
   ModalInput,
   ModalTitle,
   ModalsWrapper,
   Paragraph,
 } from "../../common/commonStyles/styled";
+import { PrimaryButton } from "../PokerSession/styled";
 
 
 
@@ -71,12 +71,12 @@ export default function RegisterModal({
             placeholder="Enter your name"
           />
           <ModalButtonsWrapper>
-            <LoginRegisterButton type="submit">
+            <PrimaryButton type="submit">
               <h2>Register</h2>
-            </LoginRegisterButton>
-            <LoginRegisterButton onClick={onClose}>
+            </PrimaryButton>
+            <PrimaryButton onClick={onClose}>
               <h2>Close</h2>
-            </LoginRegisterButton>
+            </PrimaryButton>
           </ModalButtonsWrapper>
         </ModalsWrapper>
       </form>

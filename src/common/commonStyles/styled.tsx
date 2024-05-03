@@ -5,27 +5,13 @@ export const BodyWrapper = styled('div')({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    gap: '20px'
+    gap: '20px',
+    overflow: 'hidden'
 })
 
-export const LoginRegisterButton = styled('button')({
-    backgroundColor: 'orange',
-    color: '#fff',
-    textAlign: 'center',
-    width: '200px',
-    height: '50px',
-    outline: 0,
-    border: '2px solid transparent',
-    "&:hover": {
-        backgroundColor: '#ffcc33',
-        cursor: 'pointer',
-        transition: '0.3s ease',
-        border: '2px solid orange'
-    }
-})
 
 export const ModalsWrapper = styled('div')({
-    padding: '60px 80px',
+    padding: '100px', // Decrease padding for less space
     display: 'flex',
     textAlign: 'center',    
     justifyContent: 'center',
@@ -34,20 +20,20 @@ export const ModalsWrapper = styled('div')({
     backgroundColor: '#f0f0f0',
     gap: '30px',
     zIndex: 1,
-    boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', // Adjust shadow for depth
+    borderRadius: '12px', // Add rounded corners for a softer look
 })
 
 export const ModalInput = styled('input')({
     outline: 0,
     border: 0,
     borderBottom: '2px solid #000',
-    fontSize: '22px',
-    transition: '0.3s ease',
+    fontSize: '18px', // Decrease font size for better proportion
+    transition: 'border-color 0.3s ease',
     backgroundColor: 'transparent',
     padding: '10px',
     "&:focus": {
         borderBottom: '2px solid orange',
-        transition: '0.3s ease'
     }
 })
 
@@ -61,10 +47,11 @@ export const ModalButtonsWrapper = styled('div')({
 })
 
 export const Paragraph = styled('p')({
-    fontSize: '26px',
+    fontSize: '22px', // Decrease font size for better proportion
 })
 
 export const ModalTitle = styled('h2')({
-    fontSize: '40px',
-    
+    fontSize: '32px', // Decrease font size for better proportion
+    fontWeight: 'bold', // Add bold font weight for emphasis
+    marginBottom: '20px', // Add margin bottom for spacing
 })

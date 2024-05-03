@@ -1,6 +1,5 @@
 import React, { FormEvent, useState } from "react";
 import {
-  LoginRegisterButton,
   ModalButtonsWrapper,
   ModalInput,
   ModalTitle,
@@ -8,6 +7,7 @@ import {
   Paragraph,
 } from "../../common/commonStyles/styled";
 import { loginUser } from "../../firebase/firebaseFunctions";
+import { PrimaryButton } from "../PokerSession/styled";
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -38,30 +38,32 @@ export default function LoginModal({
       <form onSubmit={handleSubmit}>
         <ModalsWrapper>
           <ModalTitle>
-            Wellcome back to the <br />
+            Welcome back to the <br />
             GC-Pointing Poker
           </ModalTitle>
           <Paragraph>Enter your email</Paragraph>
           <ModalInput
+          type="text"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
             placeholder="Enter your email"
           ></ModalInput>
           <Paragraph>Enter your password</Paragraph>
           <ModalInput
+          type="password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             placeholder="Enter your password"
           ></ModalInput>
           <ModalButtonsWrapper>
-            <LoginRegisterButton
+            <PrimaryButton
               type="submit"
             >
               <h2>Login</h2>
-            </LoginRegisterButton>
-            <LoginRegisterButton onClick={() => onClose()}>
+            </PrimaryButton>
+            <PrimaryButton onClick={() => onClose()}>
               <h2>Close</h2>
-            </LoginRegisterButton>
+            </PrimaryButton>
           </ModalButtonsWrapper>
         </ModalsWrapper>
       </form>

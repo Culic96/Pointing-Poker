@@ -5,6 +5,7 @@ import {
   collection,
   doc,
   getFirestore,
+  onSnapshot,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
@@ -23,7 +24,6 @@ const firestore = getFirestore(firebaseApp);
 const storage = getStorage(firebaseApp);
 const getCollection = (collectionPath: string) =>
   collection(firestore, collectionPath);
-
 
 
 
@@ -49,12 +49,13 @@ const getCollection = (collectionPath: string) =>
       await updateDoc(userDocRef, {
         isOnline: true,
       });
-      console.log("loggin called")
       return credential;
     } catch (error) {
       throw error;
     }
   };
+
+
 
 
 
@@ -99,4 +100,5 @@ export {
   registerUser,
   resetPassword,
   subscribeToAuthChanges,
+  
 };

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Components/Header';
-import { BodyWrapper, LoginRegisterButton } from './common/commonStyles/styled';
+import { BodyWrapper } from './common/commonStyles/styled';
 import LoginModal from './Components/LoginModal';
 import RegisterModal from './Components/RegisterModal/RegisterModal';
 import PokerSession from './Components/PokerSession/PokerSession';
-import {  AuthProvider, useAuth } from './Hooks/useAuth';
+import { useAuth } from './Hooks/useAuth';
+import { PrimaryButton } from './Components/PokerSession/styled';
 export default function App() {
   const {auth} = useAuth()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
@@ -14,7 +15,6 @@ export default function App() {
     setISRegisterModalOpen(false)
   }
   useEffect(() => {
-  console.log('auth APP.tsx', auth)
 
   },[auth])
   return (
@@ -24,16 +24,16 @@ export default function App() {
     {(!isLoginModalOpen && !isRegisterModalOpen  && auth === null )&&(
       <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', gap: '20px'}}>
    
-  <LoginRegisterButton onClick={() => setIsLoginModalOpen(true)}>
+  <PrimaryButton onClick={() => setIsLoginModalOpen(true)}>
     <h2>Login</h2>
-  </LoginRegisterButton>
-  <LoginRegisterButton onClick={() =>  setISRegisterModalOpen(true)}><h2>Register</h2></LoginRegisterButton>
+  </PrimaryButton>
+  <PrimaryButton onClick={() =>  setISRegisterModalOpen(true)}><h2>Register</h2></PrimaryButton>
 
   </div>
 )}
 
-      {isLoginModalOpen  && <LoginModal  isOpen={isLoginModalOpen} onClose={handleModalClose}/>}
-      {isRegisterModalOpen && <RegisterModal  isOpen={isRegisterModalOpen} onClose={handleModalClose}></RegisterModal>}
+      {isLoginModalOpen  && <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', gap: '20px', padding: '50px'}}> <LoginModal  isOpen={isLoginModalOpen} onClose={handleModalClose}/> </div>  }
+      {isRegisterModalOpen && <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', gap: '20px'}}> <RegisterModal  isOpen={isRegisterModalOpen} onClose={handleModalClose}></RegisterModal></div>}
       
 
       {auth && <PokerSession/>}

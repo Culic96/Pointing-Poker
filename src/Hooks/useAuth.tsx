@@ -46,7 +46,6 @@ function useAuthProvider(): AuthContext {
   }, []);
 
   const logoutUser = async () => {
-    console.log("called logout user");
     try {
       if (auth && auth.userId) {
         // Update Firestore document to set isOnline to false
