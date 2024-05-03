@@ -63,6 +63,7 @@ export default function PokerSession() {
       }
     });
   };
+  
 
   const addPointsToUser = async (userId: string, pointsToAdd: number) => {
     const updatedUsers = localUsers.map((user) => {
