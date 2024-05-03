@@ -36,7 +36,8 @@ const getCollection = (collectionPath: string) =>
         name: name,
         hasVoted: false,
         points: 0,
-        isOnline: true
+        isOnline: true,
+        showVotes: false
       });
     });
   };

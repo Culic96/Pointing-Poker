@@ -4,6 +4,7 @@ export default interface IUser {
     email: string,
     hasVoted? : boolean,
     points : number,
-    isOnline: boolean
+    isOnline: boolean,
+    showVotes: boolean
 }
 

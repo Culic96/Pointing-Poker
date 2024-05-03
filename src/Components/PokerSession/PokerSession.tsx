@@ -17,19 +17,17 @@ import { firestore } from "../../firebase/firebaseFunctions";
 import {
   collection,
   doc,
-  getDocs,
   onSnapshot,
   updateDoc,
 } from "firebase/firestore";
 import { AiOutlineCheck } from "react-icons/ai";
-import IUser from "../../firebase/firebaseFunctions/interfaces";
 import { useAuth } from "../../Hooks/useAuth";
+import IUser from "../../firebase/firebaseFunctions/interfaces";
 
 export default function PokerSession() {
   const points = [1, 2, 3, 5, 8, 13, 21];
   const [localUsers, setLocalUsers] = useState<IUser[]>([]);
-  const { auth, logoutUser } = useAuth();
-  const [showVotes, setShowVotes] = useState(false);
+  const { auth } = useAuth();
   const [activeIndex, setActiveIndex] = useState(0)
   const userDocRef = collection(firestore, "users");
   useEffect(() => {
@@ -47,8 +45,15 @@ export default function PokerSession() {
     return () => unsubscribe();
   }, []);
 
-  const showVotesHandler = () => {
-    setShowVotes(true);
+  const showVotesHandler = async () => {
+    localUsers.forEach(async (user) => {
+      if (user.id) {
+        const userDocRef = doc(firestore, "users", user.id);
+        await updateDoc(userDocRef, {
+          showVotes: true
+        });
+      }
+    });
   };
 
   const addPointsToUser = async (userId: string, pointsToAdd: number) => {
@@ -80,7 +85,6 @@ export default function PokerSession() {
         hasVoted: false,
       }))
     );
-    setShowVotes(false);
     setActiveIndex(0);
     // Update all user documents in Firestore
     localUsers.forEach(async (user) => {
@@ -89,6 +93,7 @@ export default function PokerSession() {
         await updateDoc(userDocRef, {
           points: 0,
           hasVoted: false,
+          showVotes: false
         });
       }
     });
@@ -144,7 +149,7 @@ export default function PokerSession() {
                   <UserInfoHolder isOpened={true}>
                     {user.isOnline ? user.name : null}
                   </UserInfoHolder>
-                  <UserPointsHolder isOpened={showVotes}>
+                  <UserPointsHolder isOpened={user.showVotes}>
                     {user.isOnline ? user.points : null}
                   </UserPointsHolder>
                 </UserHolder>
