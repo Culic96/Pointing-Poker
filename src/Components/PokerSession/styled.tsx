@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const PokerSessionWrapper = styled('div')({
   width: '800px',
   padding: '12px',
+  paddingTop: '100px',
   '@media (max-width: 380px)': {
     width: '100%', // Adjust width for smaller screens
     padding: '8px', // Adjust padding for smaller screens
@@ -149,11 +150,10 @@ export const UserPointsHolder = styled('div')<{ isOpened: boolean }>(
 
 export const StatisticsWrapper = styled("div")<{ isOpen: boolean }>(
   {
-    padding: "20px",
+    padding: "30px",
     display: "none",
     textAlign: "center",
     width: "300px",
-    height: "200px",
     backgroundColor: "#fff",
     flexDirection: "column",
     boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.1)",
@@ -179,11 +179,21 @@ export const StatisticOverviewHolder = styled("div")({
     listStyle: "none",
     padding: '10px',
     margin: 0,
+
   },
 
   li: {
     fontSize: "18px",
     color: "#000",
     marginBottom: "5px",
+  },
+  "> div": {
+    marginBottom: '10px',
+  },
+
+  "> p": {
+    fontSize: '18px',
+    color: '#000',
+    margin: 0,
   },
 });

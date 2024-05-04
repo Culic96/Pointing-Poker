@@ -55,7 +55,6 @@ export default function PokerSession() {
       }))
     );
   
-    // Update all user documents in Firestore
     localUsers.forEach(async (user) => {
       if (user.id) {
         const userDocRef = doc(firestore, "users", user.id);
@@ -67,7 +66,6 @@ export default function PokerSession() {
     });
   };
   
-  console.log('something is called', localUsers)
   const addPointsToUser = async (userId: string, pointsToAdd: number) => {
     const updatedUsers = localUsers.map((user) => {
       if (user.id === userId) {
@@ -119,6 +117,7 @@ export default function PokerSession() {
   const averageScore = totalPointsVotedFor / totalVotes;
 
   const clearVotes = async () => {
+
     setLocalUsers((prevUsers) =>
       prevUsers.map((user) => ({
         ...user,
@@ -198,15 +197,15 @@ export default function PokerSession() {
             </UsersWrapper>
             <StatisticsWrapper isOpen={localUsers.some((user) => user.showVotes === true)}><h2>Statistics</h2>
             <StatisticOverviewHolder>
-            <ul>
-          {votedPoints.map((point) => (
-            <li key={point}>
-              {point} points : {statistics[point]} vote/s
-            </li>
-          ))}
-        </ul>
-        <p>Average score: {averageScore}</p>
-            </StatisticOverviewHolder>
+  {votedPoints.map((point) => (
+    <div key={point} style={{ marginBottom: '10px' }}>
+      <p style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>
+        {point} points : {statistics[point]} vote/s
+      </p>
+    </div>
+  ))}
+  <p style={{ fontSize: '22px', marginTop: '20px', fontWeight: 'bold' }}>Average score: {averageScore.toFixed(2)}</p>
+</StatisticOverviewHolder>
             </StatisticsWrapper>
           </Divider>
           
