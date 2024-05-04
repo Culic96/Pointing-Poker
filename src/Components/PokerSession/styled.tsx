@@ -146,3 +146,44 @@ export const UserPointsHolder = styled('div')<{ isOpened: boolean }>(
     ...(isOpened ? {} : { backgroundColor: 'black' }),
   })
 );
+
+export const StatisticsWrapper = styled("div")<{ isOpen: boolean }>(
+  {
+    padding: "20px",
+    display: "none",
+    textAlign: "center",
+    width: "300px",
+    height: "200px",
+    backgroundColor: "#fff",
+    flexDirection: "column",
+    boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.1)",
+
+    h2: {
+      fontSize: "22px",
+      color: "#000",
+      marginBottom: "10px",
+    },
+  },
+  ({ isOpen }) => ({
+    ...(isOpen && {
+      display: "flex",
+      justifyContent: "flex-start",
+      alignItems: "center",
+      flexDirection: "column",
+    }),
+  })
+);
+
+export const StatisticOverviewHolder = styled("div")({
+  ul: {
+    listStyle: "none",
+    padding: '10px',
+    margin: 0,
+  },
+
+  li: {
+    fontSize: "18px",
+    color: "#000",
+    marginBottom: "5px",
+  },
+});

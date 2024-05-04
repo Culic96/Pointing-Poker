@@ -8,6 +8,8 @@ import {
   IntroHeading,
   PokerSessionWrapper,
   PrimaryButton,
+  StatisticOverviewHolder,
+  StatisticsWrapper,
   UserHolder,
   UserInfoHolder,
   UserPointsHolder,
@@ -28,6 +30,7 @@ export default function PokerSession() {
   const points = [1, 2, 3, 5, 8, 13, 21];
   const [localUsers, setLocalUsers] = useState<IUser[]>([]);
   const { auth } = useAuth();
+  const [statistics, setStatistics] =  useState<{ [key: number]: number }>({});
   const userDocRef = collection(firestore, "users");
   useEffect(() => {
     const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
@@ -85,6 +88,35 @@ export default function PokerSession() {
     });
   };
 
+  useEffect(() => {
+    const newStatistics: { [key: number]: number } = {};
+    localUsers.forEach((user) => {
+      if (user.hasVoted) {
+        if (user.points in newStatistics) {
+          newStatistics[user.points]++;
+        } else {
+          newStatistics[user.points] = 1;
+        }
+      }
+    });
+    setStatistics(newStatistics);
+  }, [localUsers]);
+
+  // Filter out points with no votes
+  const votedPoints = Object.keys(statistics).map(Number);
+  const totalPointsVotedFor = Object.entries(statistics).reduce(
+    (acc, [point, votes]) => acc + (parseInt(point) * votes),
+    0
+  );
+  
+  // Calculate the total number of votes
+  const totalVotes = Object.values(statistics).reduce(
+    (acc, votes) => acc + votes,
+    0
+  );
+  
+  // Calculate the average score
+  const averageScore = totalPointsVotedFor / totalVotes;
 
   const clearVotes = async () => {
     setLocalUsers((prevUsers) =>
@@ -164,6 +196,18 @@ export default function PokerSession() {
                 </UserHolder>
               ))}
             </UsersWrapper>
+            <StatisticsWrapper isOpen={localUsers.some((user) => user.showVotes === true)}><h2>Statistics</h2>
+            <StatisticOverviewHolder>
+            <ul>
+          {votedPoints.map((point) => (
+            <li key={point}>
+              {point} points : {statistics[point]} vote/s
+            </li>
+          ))}
+        </ul>
+        <p>Average score: {averageScore}</p>
+            </StatisticOverviewHolder>
+            </StatisticsWrapper>
           </Divider>
           
         </PokerSessionWrapper>
