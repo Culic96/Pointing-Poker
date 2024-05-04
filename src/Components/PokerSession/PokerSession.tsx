@@ -64,7 +64,7 @@ export default function PokerSession() {
     });
   };
   
-
+  console.log('something is called', localUsers)
   const addPointsToUser = async (userId: string, pointsToAdd: number) => {
     const updatedUsers = localUsers.map((user) => {
       if (user.id === userId) {
@@ -122,7 +122,7 @@ export default function PokerSession() {
             <GridContainer>
               {points.map((point) => (
                <GridItem
-               activeIndex={localUsers.some((user) => user.points === point)}
+               activeIndex={localUsers.some((user) => user.points === point && user.id === auth.userId)}
                key={point}
                onClick={() => {
                  addPointsToUser(auth.userId, point);
