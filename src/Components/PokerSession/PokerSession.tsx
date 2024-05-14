@@ -16,12 +16,7 @@ import {
   UsersWrapper,
 } from "./styled";
 import { firestore } from "../../firebase/firebaseFunctions";
-import {
-  collection,
-  doc,
-  onSnapshot,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { AiOutlineCheck } from "react-icons/ai";
 import { useAuth } from "../../Hooks/useAuth";
 import IUser from "../../firebase/firebaseFunctions/interfaces";
@@ -30,7 +25,8 @@ export default function PokerSession() {
   const points = [1, 2, 3, 5, 8, 13, 21];
   const [localUsers, setLocalUsers] = useState<IUser[]>([]);
   const { auth } = useAuth();
-  const [statistics, setStatistics] =  useState<{ [key: number]: number }>({});
+  const [votes, setVotes] = useState<{ [key: string]: number }>({});
+  const [statistics, setStatistics] = useState<{ [key: number]: number }>({});
   const userDocRef = collection(firestore, "users");
   useEffect(() => {
     const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
@@ -54,7 +50,7 @@ export default function PokerSession() {
         showVotes: true,
       }))
     );
-  
+
     localUsers.forEach(async (user) => {
       if (user.id) {
         const userDocRef = doc(firestore, "users", user.id);
@@ -65,8 +61,16 @@ export default function PokerSession() {
       }
     });
   };
-  
+
   const addPointsToUser = async (userId: string, pointsToAdd: number) => {
+    if (votes[userId] === pointsToAdd) {
+      return;
+    }
+
+    setVotes((prevVotes) => ({
+      ...prevVotes,
+      [userId]: pointsToAdd,
+    }));
     const updatedUsers = localUsers.map((user) => {
       if (user.id === userId) {
         return {
@@ -100,24 +104,20 @@ export default function PokerSession() {
     setStatistics(newStatistics);
   }, [localUsers]);
 
-  // Filter out points with no votes
   const votedPoints = Object.keys(statistics).map(Number);
   const totalPointsVotedFor = Object.entries(statistics).reduce(
-    (acc, [point, votes]) => acc + (parseInt(point) * votes),
+    (acc, [point, votes]) => acc + parseInt(point) * votes,
     0
   );
-  
-  // Calculate the total number of votes
+
   const totalVotes = Object.values(statistics).reduce(
     (acc, votes) => acc + votes,
     0
   );
-  
-  // Calculate the average score
+
   const averageScore = totalPointsVotedFor / totalVotes;
 
   const clearVotes = async () => {
-
     setLocalUsers((prevUsers) =>
       prevUsers.map((user) => ({
         ...user,
@@ -126,7 +126,7 @@ export default function PokerSession() {
         showVotes: false,
       }))
     );
-  
+
     localUsers.forEach(async (user) => {
       if (user.id) {
         const userDocRef = doc(firestore, "users", user.id);
@@ -148,19 +148,21 @@ export default function PokerSession() {
             Embrace the power of GC-Pointing Poker, where every idea counts and
             every contribution shapes the path to success. Let's dive into the
             heart of innovation together!
-            </IntroHeading>
+          </IntroHeading>
           <GridWrapper>
             <GridContainer>
               {points.map((point) => (
-               <GridItem
-               activeIndex={localUsers.some((user) => user.points === point && user.id === auth.userId)}
-               key={point}
-               onClick={() => {
-                 addPointsToUser(auth.userId, point);
-               }}
-             >
-               {point}
-             </GridItem>
+                <GridItem
+                  activeIndex={localUsers.some(
+                    (user) => user.points === point && user.id === auth.userId
+                  )}
+                  key={point}
+                  onClick={() => {
+                    addPointsToUser(auth.userId, point);
+                  }}
+                >
+                  {point}
+                </GridItem>
               ))}
             </GridContainer>
           </GridWrapper>
@@ -183,7 +185,10 @@ export default function PokerSession() {
                 <UserHolder key={user.id}>
                   <UserInfoHolder isOpened={true}>
                     {user.hasVoted === true && user.isOnline && (
-                      <AiOutlineCheck style={{marginLeft: '50px', color: 'green'}} size={22} />
+                      <AiOutlineCheck
+                        style={{ marginLeft: "50px", color: "green" }}
+                        size={22}
+                      />
                     )}
                   </UserInfoHolder>
                   <UserInfoHolder isOpened={true}>
@@ -195,20 +200,36 @@ export default function PokerSession() {
                 </UserHolder>
               ))}
             </UsersWrapper>
-            <StatisticsWrapper isOpen={localUsers.some((user) => user.showVotes === true)}><h2>Statistics</h2>
-            <StatisticOverviewHolder>
-  {votedPoints.map((point) => (
-    <div key={point} style={{ marginBottom: '10px' }}>
-      <p style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>
-        {point} points : {statistics[point]} vote/s
-      </p>
-    </div>
-  ))}
-  <p style={{ fontSize: '22px', marginTop: '20px', fontWeight: 'bold' }}>Average score: {averageScore.toFixed(2)}</p>
-</StatisticOverviewHolder>
+            <StatisticsWrapper
+              isOpen={localUsers.some((user) => user.showVotes === true)}
+            >
+              <h2>Statistics</h2>
+              <StatisticOverviewHolder>
+                {votedPoints.map((point) => (
+                  <div key={point} style={{ marginBottom: "10px" }}>
+                    <p
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                        margin: 0,
+                      }}
+                    >
+                      {point} points : {statistics[point]} vote/s
+                    </p>
+                  </div>
+                ))}
+                <p
+                  style={{
+                    fontSize: "22px",
+                    marginTop: "20px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Average score: {averageScore.toFixed(2)}
+                </p>
+              </StatisticOverviewHolder>
             </StatisticsWrapper>
           </Divider>
-          
         </PokerSessionWrapper>
       )}
     </>
