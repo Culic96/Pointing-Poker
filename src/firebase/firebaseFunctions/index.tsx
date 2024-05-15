@@ -27,6 +27,10 @@ const getCollection = (collectionPath: string) =>
 
 
   const registerUser = (email: string, password: string, name: string) => {
+    if(!email || !password || !name){
+      prompt("wrong credentials")
+      return;
+    }
     return createUserWithEmailAndPassword(auth, email, password).then(cred => {
       const userRef = doc(firestore, 'users', cred.user.uid);
       return setDoc(userRef, {
@@ -43,6 +47,10 @@ const getCollection = (collectionPath: string) =>
 
 
   const loginUser = async (email: string, password: string) => {
+    if(!email || !password){
+      prompt("wrong credentials")
+      return;
+    }
     try {
       const credential = await signInWithEmailAndPassword(auth, email, password);
       const userDocRef = doc(firestore, "users", credential.user.uid);
