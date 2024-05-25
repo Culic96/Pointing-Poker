@@ -6,7 +6,6 @@ export const BodyWrapper = styled('div')({
     alignItems: 'center',
     flexDirection: 'column',
     gap: '20px',
-    overflow: 'hidden'
 })
 
 

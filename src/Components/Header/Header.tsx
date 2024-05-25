@@ -1,9 +1,10 @@
 import React from "react";
 import { HeaderTitle, HeaderWrapper, ImageWrapper } from "./styled";
 import { PrimaryButton } from "../PokerSession/styled";
-import { useAuth } from "../../Hooks/useAuth";
+import { AuthProvider, useAuth } from "../../Hooks/useAuth";
 export default function Header(children: any) {
   const { auth, logoutUser } = useAuth();
+  console.log("this is auth in header", auth)
   return (
     <>
       <HeaderWrapper>
@@ -17,10 +18,13 @@ export default function Header(children: any) {
             justifyContent: "flex-end",
             alignItems: "center",
             width: "50%",
-            paddingRight: "40px",
+            height: '100%',
+            paddingRight: "60px",
+            overflow: 'hidden'
           }}
         >
-          {auth && <PrimaryButton onClick={logoutUser}>Logout</PrimaryButton>}
+          
+          {auth !== null &&<PrimaryButton onClick={logoutUser}>Logout</PrimaryButton>}
         </div>
       </HeaderWrapper>
     </>

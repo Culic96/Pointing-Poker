@@ -1,12 +1,5 @@
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
-import {
-  Context,
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useEffect, useState, Context } from "react";
 import { auth as authorization, firestore } from "../firebase/firebaseFunctions";
 import { doc, updateDoc } from "firebase/firestore";
 
@@ -29,38 +22,36 @@ function useAuthProvider(): AuthContext {
   const [auth, setAuth] = useState<Auth | null>(null);
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(
-      authorization,
-      async (authState: User | null) => {
-        if (!authState) {
-          return;
-        }
-
+    const unsub = onAuthStateChanged(authorization, (authState: User | null) => {
+      if (authState) {
         setAuth({
           userId: authState.uid,
           email: authState.email!,
         });
+      } else {
+        setAuth(null);
       }
-    );
+    });
     return unsub;
   }, []);
 
   const logoutUser = async () => {
     try {
       if (auth && auth.userId) {
-        // Update Firestore document to set isOnline to false
         const userDocRef = doc(firestore, "users", auth.userId);
         await updateDoc(userDocRef, {
           isOnline: false,
+          hasVoted: false,
+          points: 0,
+          showVotes: false
         });
       }
-  
-      // Sign out the user
+
+      setAuth(null);  // Ensure auth state is set to null before sign out
+
       await signOut(authorization);
     } catch (error: any) {
       console.log(error.message);
-    } finally {
-      setAuth(null);
     }
   };
 
@@ -69,6 +60,7 @@ function useAuthProvider(): AuthContext {
     logoutUser,
   };
 }
+
 const AuthProvider = (props: { children: ReactNode }): JSX.Element => {
   const auth = useAuthProvider();
   return (
