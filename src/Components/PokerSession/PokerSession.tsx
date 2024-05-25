@@ -18,7 +18,7 @@ import {
 import { firestore } from "../../firebase/firebaseFunctions";
 import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { AiOutlineCheck } from "react-icons/ai";
-import { AuthProvider, useAuth } from "../../Hooks/useAuth";
+import { useAuth } from "../../Hooks/useAuth";
 import IUser from "../../firebase/firebaseFunctions/interfaces";
 
 export default function PokerSession() {
@@ -62,10 +62,6 @@ export default function PokerSession() {
     });
   };
 
-
-  
-
-  console.log("something is happening")
   const addPointsToUser = async (userId: string, pointsToAdd: number) => {
     setVotes((prevVotes) => ({
       ...prevVotes,
@@ -82,7 +78,7 @@ export default function PokerSession() {
       return user;
     });
     setLocalUsers(updatedUsers);
-   
+
     const userDocRef = doc(firestore, "users", userId);
     await updateDoc(userDocRef, {
       points: pointsToAdd,
@@ -232,7 +228,6 @@ export default function PokerSession() {
           </Divider>
         </PokerSessionWrapper>
       )}
-
     </>
   );
 }
