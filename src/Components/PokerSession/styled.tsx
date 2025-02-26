@@ -148,52 +148,124 @@ export const UserPointsHolder = styled('div')<{ isOpened: boolean }>(
   })
 );
 
-export const StatisticsWrapper = styled("div")<{ isOpen: boolean }>(
-  {
-    padding: "30px",
-    display: "none",
-    textAlign: "center",
-    width: "300px",
-    backgroundColor: "#fff",
-    flexDirection: "column",
-    boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.1)",
+export const StatisticsWrapper = styled.div<{ isOpen: boolean }>`
+  padding: 30px;
+  display: none;
+  text-align: center;
+  background-color: #fff;
+  flex-direction: column;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 
-    h2: {
-      fontSize: "22px",
-      color: "#000",
-      marginBottom: "10px",
-    },
-  },
-  ({ isOpen }) => ({
-    ...(isOpen && {
-      display: "flex",
-      justifyContent: "flex-start",
-      alignItems: "center",
-      flexDirection: "column",
-    }),
-  })
-);
+  h2 {
+    font-size: 22px;
+    color: #000;
+    margin-bottom: 10px;
+  }
 
-export const StatisticOverviewHolder = styled("div")({
-  ul: {
-    listStyle: "none",
-    padding: '10px',
-    margin: 0,
+  ${({ isOpen }) => isOpen && `
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+  `}
+`;
 
-  },
+export const StatisticOverviewHolder = styled.div`
+  ul {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+  }
 
-  li: {
-    fontSize: "18px",
-    color: "#000",
-    marginBottom: "5px",
-  },
-  "> div": {
-    marginBottom: '10px',
-  },
+  li {
+    font-size: 18px;
+    color: #000;
+    margin-bottom: 5px;
+  }
 
-  "> p": {
-    fontSize: '18px',
-    color: '#000',
-    margin: 0,
-  },
-});
+  > div {
+    margin-bottom: 10px;
+  }
+
+  > p {
+    font-size: 18px;
+    color: #000;
+    margin: 0;
+  }
+`;
+
+
+export const StatisticsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+export const TitleWrapper = styled.div`
+  font-size: 24px;
+`;
+
+export const BoxStackingWrapper = styled.div<{ maxCount: number }>`
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* Aligns everything to the bottom */
+  flex-direction: row;
+  gap: 20px;
+  margin-left: 20px;
+  margin-top: 50px;
+  max-height: 600px;
+  height: ${({ maxCount }) => maxCount * 50 + 10}px; /* Allow extra space for percentage text */
+  position: relative;
+  border-bottom: 2px solid black;
+`;
+
+
+
+export const BoxColumnWrapper = styled.div<{ count: number; maxCount: number }>`
+  display: flex;
+  flex-direction: column-reverse; /* Makes boxes stack bottom-up */
+  align-items: center;
+  justify-content: flex-start; /* Stacks boxes at the bottom */
+  height: 100%;
+  width: 50px;
+  position: relative;
+`;
+
+
+
+export const PercentageText = styled.div`
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
+  position: absolute;
+  top: -25px; /* Moves percentage above the column */
+  width: 100%;
+`;
+
+export const NumberPlaceholderRow = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 20px;
+  margin-top: 10px;
+  margin-left: 20px;
+  position: relative;
+`;
+
+export const NumberPlaceholder = styled.div`
+  width: 50px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+`;
+
+
+export const Box = styled.div`
+  width: 50px;
+  height: 50px;
+  background: orange;
+`;

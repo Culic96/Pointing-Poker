@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from "react";
 import {
+  BoxColumnWrapper,
+  BoxStackingWrapper,
   ButtonsWrapper,
   Divider,
   GridContainer,
   GridItem,
   GridWrapper,
   IntroHeading,
+  NumberPlaceholder,
+  NumberPlaceholderRow,
   PokerSessionWrapper,
   PrimaryButton,
   StatisticOverviewHolder,
+  StatisticsContainer,
   StatisticsWrapper,
+  TitleWrapper,
   UserHolder,
   UserInfoHolder,
   UserPointsHolder,
   UsersWrapper,
+  Box,
+  PercentageText
 } from "./styled";
 import { firestore } from "../../firebase/firebaseFunctions";
 import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
@@ -28,6 +36,8 @@ export default function PokerSession() {
   const [votes, setVotes] = useState<{ [key: string]: number }>({});
   const [statistics, setStatistics] = useState<{ [key: number]: number }>({});
   const userDocRef = collection(firestore, "users");
+
+
   useEffect(() => {
     const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
       const onlineUsers: IUser[] = [];
@@ -101,18 +111,45 @@ export default function PokerSession() {
   }, [localUsers]);
 
   const votedPoints = Object.keys(statistics).map(Number);
-  const totalPointsVotedFor = Object.entries(statistics).reduce(
-    (acc, [point, votes]) => acc + parseInt(point) * votes,
-    0
-  );
 
+  // Total number of votes cast (sum of all votes)
   const totalVotes = Object.values(statistics).reduce(
     (acc, votes) => acc + votes,
     0
   );
 
-  const averageScore = totalPointsVotedFor / totalVotes;
+  // --- New Variables ---
+  const calculatePercentage = (votes: number) => {
+    return totalVotes > 0 ? ((votes / totalVotes) * 100).toFixed(2) : "0.00";
+  };
 
+
+
+  // Avoid division by zero
+  const percentages: { point: number; percentage: number }[] = totalVotes > 0
+    ? points.map((point) => ({
+      point,
+      percentage: statistics[point]
+        ? parseFloat(((statistics[point] / totalVotes) * 100).toFixed(2))
+        : 0,
+    }))
+    : [];
+
+  // Get the highest percentage
+  const highestPercentageValue = percentages.length
+    ? Math.max(...percentages.map((entry) => entry.percentage))
+    : 0;
+
+  // Find all points that have the highest percentage
+  const highestPercentagePoints = percentages
+    .filter((entry) => entry.percentage === highestPercentageValue)
+    .map((entry) => entry.point);
+
+  // Generate the correct display text
+  const highestPercentageText =
+    highestPercentagePoints.length > 0
+      ? `Highest Percentage: ${highestPercentagePoints.join(", ")} (${highestPercentageValue}%)`
+      : "No votes yet";
   const clearVotes = async () => {
     setLocalUsers((prevUsers) =>
       prevUsers.map((user) => ({
@@ -135,6 +172,9 @@ export default function PokerSession() {
       }
     });
   };
+
+  const maxCount = Math.max(...Object.values(statistics));
+
 
   return (
     <>
@@ -196,37 +236,43 @@ export default function PokerSession() {
                 </UserHolder>
               ))}
             </UsersWrapper>
-            <StatisticsWrapper
-              isOpen={localUsers.some((user) => user.showVotes === true)}
-            >
-              <h2>Statistics</h2>
-              <StatisticOverviewHolder>
-                {votedPoints.map((point) => (
-                  <div key={point} style={{ marginBottom: "10px" }}>
-                    <p
-                      style={{
-                        fontSize: "20px",
-                        fontWeight: "bold",
-                        margin: 0,
-                      }}
-                    >
-                      {point} points : {statistics[point]} vote/s
-                    </p>
-                  </div>
-                ))}
-                <p
-                  style={{
-                    fontSize: "22px",
-                    marginTop: "20px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Average score: {averageScore.toFixed(2)}
-                </p>
-              </StatisticOverviewHolder>
+            <StatisticsWrapper isOpen={localUsers.some((user) => user.showVotes === true)}>
+              <StatisticsContainer>
+                <TitleWrapper>
+                  <h2>Statistics</h2>
+                  <p>{highestPercentageText}</p> {/* Display highest percentage & points */}
+                </TitleWrapper>
+
+                {/* Box Stacking Section */}
+                <BoxStackingWrapper maxCount={maxCount}>
+                  {points.map((point) => (
+                    <BoxColumnWrapper key={point} count={statistics[point]} maxCount={maxCount}>
+                      <PercentageText>
+                        {statistics[point] > 0
+                          ? `${((statistics[point] / totalVotes) * 100).toFixed(0)}%`
+                          : ""}
+                      </PercentageText>
+                      {statistics[point] > 0
+                        ? Array(statistics[point])
+                          .fill(0)
+                          .map((_, i) => <Box key={`${point}-${i}`} />)
+                        : null}
+                    </BoxColumnWrapper>
+                  ))}
+                </BoxStackingWrapper>
+                <NumberPlaceholderRow>
+                  {points.map((point) => (
+                    <NumberPlaceholder key={point}>{point}</NumberPlaceholder>
+                  ))}
+                </NumberPlaceholderRow>
+              </StatisticsContainer>
             </StatisticsWrapper>
+
+
           </Divider>
+
         </PokerSessionWrapper>
+
       )}
     </>
   );
