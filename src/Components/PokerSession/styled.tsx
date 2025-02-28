@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
 export const PokerSessionWrapper = styled('div')({
-  width: '800px',
+  width: '1024px',
   padding: '12px',
   paddingTop: '100px',
+  fontFamily: 'sans-serif',
   '@media (max-width: 380px)': {
     width: '100%', // Adjust width for smaller screens
     padding: '8px', // Adjust padding for smaller screens
@@ -66,6 +67,7 @@ export const Divider = styled('div')({
   display: 'flex',
   justifyContent: 'flex-start',
   alignItems: 'center',
+  
 });
 
 export const ButtonsWrapper = styled('div')({
@@ -103,6 +105,7 @@ export const UsersWrapper = styled('div')({
   flexDirection: 'column',
   justifyContent: 'space-around',
   alignItems: 'flex-start',
+  
 });
 
 export const UserHolder = styled('div')({
@@ -128,6 +131,7 @@ export const UserInfoHolder = styled('div')<{ isOpened: boolean }>(
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
+  fontFamily: 'sans-serif',
     transition: 'backgroundColor 0,5s ease',
   },
   ({ isOpened }) => ({
@@ -157,7 +161,7 @@ export const StatisticsWrapper = styled.div<{ isOpen: boolean }>`
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 
   h2 {
-    font-size: 22px;
+    font-size: 32px;
     color: #000;
     margin-bottom: 10px;
   }
@@ -167,6 +171,7 @@ export const StatisticsWrapper = styled.div<{ isOpen: boolean }>`
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
+
   `}
 `;
 
@@ -207,29 +212,26 @@ export const TitleWrapper = styled.div`
   font-size: 24px;
 `;
 
-export const BoxStackingWrapper = styled.div<{ maxCount: number }>`
+export const BoxStackingWrapper = styled.div`
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* Aligns everything to the bottom */
+  align-items: flex-end;
   flex-direction: row;
   gap: 20px;
   margin-left: 20px;
-  margin-top: 50px;
-  max-height: 600px;
-  height: ${({ maxCount }) => maxCount * 50 + 10}px; /* Allow extra space for percentage text */
+  margin-top: 20px;
+  height: 200px; /* Fixed max height */
   position: relative;
   border-bottom: 2px solid black;
 `;
 
-
-
-export const BoxColumnWrapper = styled.div<{ count: number; maxCount: number }>`
+export const BoxColumnWrapper = styled.div<{ columnHeight: number }>`
   display: flex;
-  flex-direction: column-reverse; /* Makes boxes stack bottom-up */
+  flex-direction: column-reverse;
   align-items: center;
-  justify-content: flex-start; /* Stacks boxes at the bottom */
-  height: 100%;
+  justify-content: flex-end;
   width: 50px;
+  height: ${({ columnHeight }) => `${columnHeight}px`}; /* Now scaled based on totalVotes */
   position: relative;
 `;
 
@@ -253,7 +255,6 @@ export const NumberPlaceholderRow = styled.div`
   gap: 20px;
   margin-top: 10px;
   margin-left: 20px;
-  position: relative;
 `;
 
 export const NumberPlaceholder = styled.div`
@@ -263,9 +264,8 @@ export const NumberPlaceholder = styled.div`
   font-size: 18px;
 `;
 
-
-export const Box = styled.div`
+export const Box = styled.div<{ boxHeight: number }>`
   width: 50px;
-  height: 50px;
   background: orange;
+  height: ${({ boxHeight }) => `${boxHeight}px`}; /* Each box gets evenly spaced height */
 `;

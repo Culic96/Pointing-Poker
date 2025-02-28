@@ -10,31 +10,39 @@ export const BodyWrapper = styled('div')({
 
 
 export const ModalsWrapper = styled('div')({
-    padding: '100px', // Decrease padding for less space
+    padding: '60px 120px',
     display: 'flex',
-    textAlign: 'center',    
+    textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    backgroundColor: '#f0f0f0',
+    background: '#fff', // Clean white background
+    border: '2px solid #ffcc33', // Soft orange border
     gap: '30px',
-    zIndex: 1,
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', // Adjust shadow for depth
-    borderRadius: '12px', // Add rounded corners for a softer look
-})
+    zIndex: 10,
+    boxShadow: '0px 6px 12px #ffcc33', // Soft orange glow
+    borderRadius: '16px',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    "&:hover": {
+        transform: 'scale(1.02)',
+        boxShadow: '0px 8px 18px #ffcc33', // Stronger orange glow on hover
+    }
+});
 
 export const ModalInput = styled('input')({
-    outline: 0,
-    border: 0,
-    borderBottom: '2px solid #000',
-    fontSize: '18px', // Decrease font size for better proportion
-    transition: 'border-color 0.3s ease',
-    backgroundColor: 'transparent',
-    padding: '10px',
+    outline: 'none',
+    border: '2px solid #ffcc33', // Orange border
+    fontSize: '18px',
+    transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+    backgroundColor: '#fff',
+    padding: '12px',
+    color: '#333', // Dark text for contrast
+    borderRadius: '8px',
     "&:focus": {
-        borderBottom: '2px solid orange',
+        borderColor: 'orange',
+        boxShadow: '0px 0px 10px rgba(255, 140, 0, 0.8)',
     }
-})
+});
 
 export const ModalButtonsWrapper = styled('div')({
     width: '100%',
@@ -43,14 +51,18 @@ export const ModalButtonsWrapper = styled('div')({
     justifyContent: 'space-around',
     alignItems: 'center',
     gap: '20px'
-})
+});
 
 export const Paragraph = styled('p')({
-    fontSize: '22px', // Decrease font size for better proportion
-})
+    fontSize: '20px',
+    color: '#333', // Darker text for readability
+});
 
 export const ModalTitle = styled('h2')({
-    fontSize: '32px', // Decrease font size for better proportion
-    fontWeight: 'bold', // Add bold font weight for emphasis
-    marginBottom: '20px', // Add margin bottom for spacing
-})
+    fontSize: '28px',
+    fontWeight: 'bold',
+    marginBottom: '20px',
+    color: 'orange',
+    textShadow: '0px 0px 8px rgba(255, 140, 0, 0.5)', // Soft glow for emphasis
+    letterSpacing: '1px',
+});

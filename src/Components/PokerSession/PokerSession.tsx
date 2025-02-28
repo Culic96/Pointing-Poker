@@ -174,7 +174,7 @@ export default function PokerSession() {
   };
 
   const maxCount = Math.max(...Object.values(statistics));
-
+  const MAX_HEIGHT = 200;
 
   return (
     <>
@@ -244,22 +244,32 @@ export default function PokerSession() {
                 </TitleWrapper>
 
                 {/* Box Stacking Section */}
-                <BoxStackingWrapper maxCount={maxCount}>
-                  {points.map((point) => (
-                    <BoxColumnWrapper key={point} count={statistics[point]} maxCount={maxCount}>
-                      <PercentageText>
-                        {statistics[point] > 0
-                          ? `${((statistics[point] / totalVotes) * 100).toFixed(0)}%`
-                          : ""}
-                      </PercentageText>
-                      {statistics[point] > 0
-                        ? Array(statistics[point])
-                          .fill(0)
-                          .map((_, i) => <Box key={`${point}-${i}`} />)
-                        : null}
-                    </BoxColumnWrapper>
-                  ))}
-                </BoxStackingWrapper>
+
+                <BoxStackingWrapper>
+  {points.map((point) => {
+    const voteCount = statistics[point] || 0;
+    const percentage = voteCount > 0 ? (voteCount / totalVotes) * 100 : 0; // Get percentage
+    const columnHeight = (percentage / 100) * MAX_HEIGHT; // Scale based on totalVotes
+    const boxHeight = voteCount > 0 ? columnHeight / voteCount : 0; // Each box has equal height
+
+    return (
+      <BoxColumnWrapper key={point} columnHeight={columnHeight}>
+        <PercentageText>
+          {percentage > 0 ? `${percentage.toFixed(0)}%` : ""}
+        </PercentageText>
+
+        {voteCount > 0
+          ? Array(voteCount)
+              .fill(0)
+              .map((_, i) => (
+                <Box key={`${point}-${i}`} boxHeight={boxHeight} />
+              ))
+          : null}
+      </BoxColumnWrapper>
+    );
+  })}
+</BoxStackingWrapper>
+
                 <NumberPlaceholderRow>
                   {points.map((point) => (
                     <NumberPlaceholder key={point}>{point}</NumberPlaceholder>
