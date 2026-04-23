@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   BoxColumnWrapper,
   BoxStackingWrapper,
@@ -32,12 +32,13 @@ export default function PokerSession() {
   const points = [1, 2, 3, 5, 8, 13, 21];
   const [localUsers, setLocalUsers] = useState<IUser[]>([]);
   const { auth } = useAuth();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [votes, setVotes] = useState<{ [key: string]: number }>({});
   const [statistics, setStatistics] = useState<{ [key: number]: number }>({});
-  const userDocRef = collection(firestore, "users");
   const MAX_HEIGHT = 200;
 
+  const userDocRef = useMemo(() => {
+  return collection(firestore, "users");
+}, []);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
@@ -52,8 +53,7 @@ export default function PokerSession() {
     });
 
     return () => unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userDocRef]);
 
   const showVotesHandler = async () => {
     setLocalUsers((prevUsers) =>
