@@ -32,7 +32,7 @@ export default function PokerSession() {
   const points = [1, 2, 3, 5, 8, 13, 21];
   const [localUsers, setLocalUsers] = useState<IUser[]>([]);
   const { auth } = useAuth();
-  //@typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [votes, setVotes] = useState<{ [key: string]: number }>({});
   const [statistics, setStatistics] = useState<{ [key: number]: number }>({});
   const userDocRef = collection(firestore, "users");
@@ -52,6 +52,7 @@ export default function PokerSession() {
     });
 
     return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const showVotesHandler = async () => {
