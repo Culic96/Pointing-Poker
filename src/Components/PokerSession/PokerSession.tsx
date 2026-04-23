@@ -229,10 +229,8 @@ export default function PokerSession() {
               <StatisticsContainer>
                 <TitleWrapper>
                   <h2>Statistics</h2>
-                  <p>{highestPercentageText}</p> {/* Display highest percentage & points */}
+                  <p>{highestPercentageText}</p> 
                 </TitleWrapper>
-
-                {/* Box Stacking Section */}
 
                 <BoxStackingWrapper>
                   {points.map((point) => {
