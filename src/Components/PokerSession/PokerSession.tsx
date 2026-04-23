@@ -12,7 +12,6 @@ import {
   NumberPlaceholderRow,
   PokerSessionWrapper,
   PrimaryButton,
-  StatisticOverviewHolder,
   StatisticsContainer,
   StatisticsWrapper,
   TitleWrapper,
@@ -36,6 +35,7 @@ export default function PokerSession() {
   const [votes, setVotes] = useState<{ [key: string]: number }>({});
   const [statistics, setStatistics] = useState<{ [key: number]: number }>({});
   const userDocRef = collection(firestore, "users");
+  const MAX_HEIGHT = 200;
 
 
   useEffect(() => {
@@ -110,28 +110,19 @@ export default function PokerSession() {
     setStatistics(newStatistics);
   }, [localUsers]);
 
-  const votedPoints = Object.keys(statistics).map(Number);
 
-  // Total number of votes cast (sum of all votes)
   const totalVotes = Object.values(statistics).reduce(
     (acc, votes) => acc + votes,
     0
   );
-
-  // --- New Variables ---
-  const calculatePercentage = (votes: number) => {
-    return totalVotes > 0 ? ((votes / totalVotes) * 100).toFixed(2) : "0.00";
-  };
-
-
 
   // Avoid division by zero
   const percentages: { point: number; percentage: number }[] = totalVotes > 0
     ? points.map((point) => ({
       point,
       percentage: statistics[point]
-        ? parseFloat(((statistics[point] / totalVotes) * 100).toFixed(2))
-        : 0,
+  ? (statistics[point] / totalVotes) * 100
+  : 0,
     }))
     : [];
 
@@ -173,8 +164,6 @@ export default function PokerSession() {
     });
   };
 
-  const maxCount = Math.max(...Object.values(statistics));
-  const MAX_HEIGHT = 200;
 
   return (
     <>
@@ -246,29 +235,29 @@ export default function PokerSession() {
                 {/* Box Stacking Section */}
 
                 <BoxStackingWrapper>
-  {points.map((point) => {
-    const voteCount = statistics[point] || 0;
-    const percentage = voteCount > 0 ? (voteCount / totalVotes) * 100 : 0; // Get percentage
-    const columnHeight = (percentage / 100) * MAX_HEIGHT; // Scale based on totalVotes
-    const boxHeight = voteCount > 0 ? columnHeight / voteCount : 0; // Each box has equal height
+                  {points.map((point) => {
+                    const voteCount = statistics[point] || 0;
+                    const percentage = voteCount > 0 ? (voteCount / totalVotes) * 100 : 0; // Get percentage
+                    const columnHeight = (percentage / 100) * MAX_HEIGHT; // Scale based on totalVotes
+                    const boxHeight = voteCount > 0 ? columnHeight / voteCount : 0; // Each box has equal height
 
-    return (
-      <BoxColumnWrapper key={point} columnHeight={columnHeight}>
-        <PercentageText>
-          {percentage > 0 ? `${percentage.toFixed(0)}%` : ""}
-        </PercentageText>
+                    return (
+                      <BoxColumnWrapper key={point} columnHeight={columnHeight}>
+                        <PercentageText>
+                          {percentage > 0 ? `${percentage.toFixed(0)}%` : ""}
+                        </PercentageText>
 
-        {voteCount > 0
-          ? Array(voteCount)
-              .fill(0)
-              .map((_, i) => (
-                <Box key={`${point}-${i}`} boxHeight={boxHeight} />
-              ))
-          : null}
-      </BoxColumnWrapper>
-    );
-  })}
-</BoxStackingWrapper>
+                        {voteCount > 0
+                          ? Array(voteCount)
+                            .fill(0)
+                            .map((_, i) => (
+                              <Box key={`${point}-${i}`} boxHeight={boxHeight} />
+                            ))
+                          : null}
+                      </BoxColumnWrapper>
+                    );
+                  })}
+                </BoxStackingWrapper>
 
                 <NumberPlaceholderRow>
                   {points.map((point) => (
