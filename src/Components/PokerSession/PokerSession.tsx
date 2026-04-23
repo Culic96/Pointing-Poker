@@ -210,6 +210,7 @@ export default function PokerSession() {
                 <UserHolder key={user.id}>
                   <UserInfoHolder isOpened={true}>
                     {user.hasVoted === true && user.isOnline && (
+                      // @ts-ignore
                       <AiOutlineCheck
                         style={{ marginLeft: "50px", color: "green" }}
                         size={22}
