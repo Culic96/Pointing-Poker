@@ -9,7 +9,7 @@ export default function Header(children: any) {
     <>
       <HeaderWrapper>
         <ImageWrapper>
-          <img src={"/images/argusLogo.png"} width={70} height={50}></img>
+          <img src={"/images/argusLogo.png"} alt="logo" width={70} height={50}></img>
           <HeaderTitle>GC-Pointing Poker</HeaderTitle>
         </ImageWrapper>
         <div

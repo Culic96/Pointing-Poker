@@ -20,6 +20,7 @@ const publicRuntimeConfig = {
   firebaseConfig,
 };
 
+//@typescript-eslint/no-unused-vars
 const reactConfig = {
   "hosting": {
   "public": "public",  
@@ -33,6 +34,7 @@ const reactConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+//@typescript-eslint/no-unused-vars
 const analytics = getAnalytics(app);
 
 export default publicRuntimeConfig;
